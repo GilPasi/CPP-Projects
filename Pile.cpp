@@ -7,27 +7,44 @@ Authors: Lior Poterman, ID: 315368035
 #include <iostream>
 
 
-Pile :: Pile(int size){
+Pile :: Pile(){
+    int size = 28;//Default pile has 28 stones
     //Dynamic allocation as requested
     stones = new Stone[size];
     this->size = size;
+
+    cout << "\nPile constructed\n";
 }
 
-Stone Pile :: stoneAt (int index){
+Pile :: Pile(int size){
+    this->size = size;
+
+
+    if (size == 0){//If there are no stones, the first stone still needs to be taken
+        stones = new Stone[1];
+        return;
+    }
+    //Dynamic allocation as requested
+    stones = new Stone[size];
+
+
+}
+
+Stone& Pile :: stoneAt (int index){
+
     if(index >= size || index < 0){
         cout << "Index out of bound, method crash"<<endl;
         exit(EXIT_FAILURE);
     }
-
-
     //This function returns the stone in the requested index
+
     return stones[index];
 }
 
 void Pile :: print_open(){
     //This method print all the stones in their opened form
     for (int i = 0; i < size; i++){
-        std :: cout << "  ";
+        cout << "\t";
         stones[i].print_open();
     }
 }
@@ -35,33 +52,40 @@ void Pile :: print_open(){
 void Pile ::  print_close(){
     //This method print all the stones in their closed form
     for (int i = 0; i < size; i++){
+        cout << "\t";
         stones[i].print_close();
     }
 }
 
+int Pile ::get_size() {return size;}
+
 void Pile :: fill (int start = 0){//start from the zero as a default
     int place = start;
-    bool stay_in_loop = true;
 
-    for (int i = 0; i <= MAX_VAL && stay_in_loop; i++){
-        for (int j = i; j <= MAX_VAL && stay_in_loop; j++){
+    for (int i = 0; i <= MAX_VAL; i++){
+        for (int j = i; j <= MAX_VAL ; j++){
+
+            if(place == size)//Avoid memory leak
+                return;
 
             Stone current (i,j);//Create the right stone
             stones[place ++] = current;
 
-            if(place == size)//Avoid memory leak
-                stay_in_loop = false;
+
         }
     }
 }
 
 void Pile :: shuffle (){
-    Stone disqualify_stone(-1,-1);//These stone represent an empty cell
-    Stone temp[size];
-    srand(time(0));
     int index = 0;
     int random_place;
-    //random_place = 1;
+
+    Stone disqualify_stone(-1,-1);//These stone represent an empty cell
+
+    Stone *temp = new Stone[size];
+
+    srand(time(0));
+
 
 
     while (index != size){
@@ -75,28 +99,61 @@ void Pile :: shuffle (){
         temp[index ++].transfer_data(*current);
         stones [random_place].make_null();
     }
-
     //After the order was made, it will be copied to the actual array:
-
-    for (int i = 0; i < size; i ++)
-        stones [i] = temp [i];
+    delete stones;
+    stones = temp;
 }
 
-void Pile :: add_top (Stone &added_stone){
-    //This method add a stone at the top of the pile
-    stones[size ++] = added_stone;//Increase size in order to avoid further problems in other methods
+void Pile :: add_top ( Stone &added_stone){
+    /*This method add a stone at the top of the pile*/
+
+    if (size == 0){//If the pile is empty, there is still one empty place
+        *stones = added_stone;
+        ++size;
+        return;
+    }
+
+
+    Stone *new_stones = new Stone [++size];//Allocate a new place with larger space
+
+    pilecpy(new_stones,stones,size -1 );//copy all the stones
+    new_stones [size - 1] = added_stone;
+
+    delete [] stones;//Deallocate
+    stones = new_stones;//Redefine
+
 }
 
 void Pile :: add_bottom (Stone &added_stone){
     //This method add a stone at the bottom of the pile
-    stones[-1] = added_stone;//Add at bottom
-    stones = &stones[-1];//Redefine the first index of the array
-    size ++;//Increase size in order to avoid further problems in other methods
+    if (size++ == 0){//If the pile is empty, there is still one empty place
+        *stones = added_stone;
+        return;
+    }
+
+
+
+    Stone *new_stones = new Stone [size];//Allocate a new place with larger space
+
+    pilecpy(new_stones + 1,stones,size -1 );//stones + 1 , leave a space for the bottom stone
+    new_stones [0] = added_stone;//Copy data into the new cell
+
+    Stone *to_be_deleted = stones;
+    delete [] to_be_deleted;//Deallocate
+    cout << "Here";
+
+    stones = new_stones;//Redefine
 }
 
 void Pile :: remove_stone (int index){
     /*This method will override the stone in the given index and diminish the gap.
     In this way the array will be kept continuous*/
+
+    if (index >= size || index < 0){
+        cout << "index out of bound\n";
+        exit(EXIT_FAILURE);
+    }
+
 
     for (int i = index; i < size; i++)
         stones[i].transfer_data(stones[i + 1]);
@@ -107,8 +164,27 @@ void Pile :: remove_stone (int index){
     size --;
 }
 
+void Pile :: reboot_size(){
+    /*This method is setting the size to 0 for the sake of ending the game*/
+    this->size = 0;
+
+}
+
+void Pile ::pilecpy(Stone *dst,Stone *src, int len ){
+
+    for (int i = 0 ; i < len; i++){
+        dst[i] = src[i];
+    }
+
+}
+
+
+
+
 Pile :: ~Pile (){
+    cout <<"Pile destructed, size is "<<size<< " Address is :" << &stones<<endl;
     delete [] stones;
+    stones = nullptr;
 }
 
 

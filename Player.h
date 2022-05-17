@@ -12,22 +12,26 @@ Authors: Lior Poterman, ID: 315368035
 class Player {
 private:
     bool is_PC;//This boolean value is vital for the print method
-    int hand_size = 7;
-    char* name = NULL;
-    Pile hand = Pile(hand_size); // cannot postpone initialization to the constructing part
+    static int const START_SIZE = 7;
+    char* name = nullptr;
+    Pile hand = Pile(0); // cannot postpone initialization to the constructing part
 
 
 public:
 
     //Constructors:
     Player (char* name, bool is_PC);
+    Player();
 
     //Accessors:
-    void print();
-    char* get_name() const;
+    void print_hand();
+    char* get_name() ;
+    Pile& get_hand() ;
+    bool get_is_PC()const;
+    int get_START_SIZE();
 
     //Mutators:
-    void add_stone (Stone added_stone);
+    void add_stone ( Stone &added_stone);
     void remove_stone (int index);
     void set_name (char* name);
 
@@ -35,7 +39,7 @@ public:
     //Destructor:
     ~Player();
 
-//No dynamic allocations, no need for a destructor
+
 };
 
 

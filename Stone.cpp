@@ -32,12 +32,52 @@ void Stone::flip() {
     l = temp;
 }
 
+int Stone :: get_l() const{return l;}
+int  Stone :: get_r() const{return r;}
+
 void Stone::print_open() const {
     std::cout << "[" << l << "][" << r << "]";//Matching values show
 }
 
 void Stone::print_close() {
-    std::cout << "[ ][ ]\n";
+    std::cout << "[ ][ ]";
+}
+
+bool Stone ::match(Stone &stated_s, bool check_right){// Send the actual stone
+    /*This method will check if 2 stones are connectable.The current stone (this) is already stated on the board.
+     * Therefore, cannot be flipped. On the other hand, the stone "other" is flippable.
+     * If the two are simply equal, a true boolean will be returned.
+     * If the other stone is semi-equal, it will be flipped and then return a true boolean.*/
+
+    if(check_right){// Check to the right by comparison to the stone
+
+        if (this->l == stated_s.r)
+            return true;
+
+        if (this->r == stated_s.r){//The remote sides are equal
+            this->flip();//Now they are equal
+            return true;
+        }
+
+    }
+    else{//Check to the left of the stone
+        if(this->r == stated_s.l)
+            return true;
+
+        if (this->l == stated_s.l){//The remote sides are equal
+            this->flip();//Now they are equal
+            return true;
+        }
+    }
+
+
+
+    return false;//Otherwise they are not equal
+}
+
+bool Stone:: equals (Stone other){
+    return l == other.l && r == other.r;;
+
 }
 
 void Stone::set_l(int l_updated) {
@@ -60,4 +100,3 @@ void Stone::transfer_data(Stone &other) {
     this->l = other.l;
     this->r = other.r;
 }
-

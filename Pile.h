@@ -18,11 +18,14 @@ private:
 public:
     //Constructors:
     Pile (int size);
+    Pile ();
+
 
     //Accessors:
-    Stone stoneAt (int index);
+    Stone&  stoneAt (int index);//Also send a pointer so the adress can be accessed too
     void print_open();
     void print_close();
+    int get_size();
 
     //Mutators:
     void fill (int start);
@@ -30,6 +33,11 @@ public:
     void add_top (Stone &added_stone);
     void add_bottom (Stone &added_stone);
     void remove_stone (int index);
+    void reboot_size();
+
+
+        //Assistants:
+    void pilecpy(Stone *dst,Stone *src,int len );
 
     //Destructor:
     ~Pile ();

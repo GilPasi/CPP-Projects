@@ -19,14 +19,20 @@ public:
     Stone(int l, int r);
 
     //Accessors:
+    int get_l() const;
+    int get_r() const;
     void print_open() const;
-    static void print_close() ;
+    static void print_close();
     bool is_null()const;
+
+
 
     //Mutators:
     void flip();
+    bool equals (Stone other);
     void set_l(int l);
     void set_r(int r);
+    bool match (Stone &stated_s, bool left_on_board);
     void make_null();
     void transfer_data(Stone &other);
 };
