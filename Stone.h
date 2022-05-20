@@ -14,25 +14,25 @@ private:
 public:
 
     //Constructors:
-    Stone(Stone &other);
     Stone();
     Stone(int l, int r);
+    Stone(Stone &other);
+
 
     //Accessors:
     int get_l() const;
     int get_r() const;
     void print_open() const;
     static void print_close();
+    bool match (Stone &stated_s, bool left_on_board, bool flip_allowed);
     bool is_null()const;
-
-
+    bool equals (Stone other);
+    int get_points();
 
     //Mutators:
     void flip();
-    bool equals (Stone other);
     void set_l(int l);
     void set_r(int r);
-    bool match (Stone &stated_s, bool left_on_board);
     void make_null();
     void transfer_data(Stone &other);
 };

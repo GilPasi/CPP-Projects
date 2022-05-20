@@ -7,15 +7,6 @@
 
 int main() {
 
-//    Pile pile(28);
-//
-//    pile.fill();
-//
-//    pile.print_open();
-
-
-
-
 
     Player p1("Aka" , false);
 
@@ -25,9 +16,6 @@ int main() {
 
 
     game_1.run_game();
-
-
-
 
 
     return 0;

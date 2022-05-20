@@ -14,7 +14,7 @@ private:
     Stone *stones;
     int size;
     static const int MAX_VAL  = 6;//A stone's value cannot be greater than 6
-
+    static const int DEF_SIZE = 28;
 public:
     //Constructors:
     Pile (int size);
@@ -24,8 +24,9 @@ public:
     //Accessors:
     Stone&  stoneAt (int index);//Also send a pointer so the adress can be accessed too
     void print_open();
-    void print_close();
+    void print_close();//TODO use
     int get_size();
+    int sum();
 
     //Mutators:
     void fill (int start);

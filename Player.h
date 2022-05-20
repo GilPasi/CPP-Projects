@@ -24,9 +24,9 @@ public:
     Player();
 
     //Accessors:
-    void print_hand();
     char* get_name() ;
     Pile& get_hand() ;
+    void print_hand();
     bool get_is_PC()const;
     int get_START_SIZE();
 
