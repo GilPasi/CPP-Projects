@@ -15,19 +15,19 @@ using namespace std;
     }
 
     Player :: Player (){
-        char name[] = "";
-        set_name(name);//Anonymous name
+        char default_name []= "";
+        set_name(default_name);//Anonymous name
+        is_PC = true;//For simplicity reasons, a player is computer by default
     }
 
     char* Player :: get_name()  { return name;}
-    bool Player :: get_is_PC()const{return is_PC;};
+    bool Player :: get_is_PC()const{return is_PC;}
     Pile& Player :: get_hand() {return hand;}
     void Player :: print_hand(){
 
         //As requested: computer's print is close and the player's print is open
         if(is_PC)
-            //TODO return to this : hand.print_close();
-            hand.print_open();
+            hand.print_close();
         else
             hand.print_open();
 
@@ -40,8 +40,6 @@ using namespace std;
 
     }
 
-
-    int Player :: get_START_SIZE(){return START_SIZE;};
 
     void Player :: add_stone ( Stone &added_stone){
         hand.add_top( added_stone);//Use the written method

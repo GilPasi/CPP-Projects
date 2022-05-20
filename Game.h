@@ -18,8 +18,8 @@ private:
     Pile deck;
     Pile game_deck = Pile (0);//Before the game has started, there are no stones on the board
 
-    Stone *first = NULL;
-    Stone *last = NULL;
+    Stone *first = nullptr;
+    Stone *last = nullptr;
 
 
     //Interact methods:
@@ -28,7 +28,7 @@ private:
 
     //Runners:
     void stone_handing_out ();
-    void player_turn();
+    void human_turn();
     void cpu_turn();
     void game_over (Player& winner);
 

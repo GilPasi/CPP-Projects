@@ -9,6 +9,7 @@ using  namespace std;
 
 static bool player1_turn;
 static bool deck_not_empty = true;
+static int const HAND_SIZE = 7;
 
 Game :: Game(Player &player1, Player &player2){
 
@@ -20,9 +21,6 @@ Game :: Game(Player &player1, Player &player2){
         //First at the first of the deck and last at last
         first = &deck.stoneAt(0);
         last = &deck.stoneAt(0);
-
-    cout << "\nA game constructed!\n";
-
 }
 
 
@@ -47,19 +45,10 @@ void Game::print_game_status() {
 
 void Game :: run_game(){
 
-    cout << "running game \n";
+    deck.shuffle();
 
-    //deck.shuffle();
     stone_handing_out();
     find_first_turn();
-
-
-    //TODO delete later
-    player1_turn = true;
-
-
-    //TODO
-
 
     Player *current = &find_current_player();
     Player *next = nullptr;
@@ -73,7 +62,7 @@ void Game :: run_game(){
         if (current->get_is_PC())
             cpu_turn();
         else
-            player_turn();
+            human_turn();
 
         //Switch turns:
         player1_turn = !player1_turn;
@@ -86,7 +75,7 @@ void Game :: run_game(){
     }
 }
 
-void Game :: player_turn() {
+void Game :: human_turn() {
 
     int result;
     int stone_index;
@@ -134,7 +123,12 @@ void Game :: player_turn() {
             case(5):
                 break;
 
+            default:
+                cout << "Something went wrong, crash program\n";
+                exit(EXIT_FAILURE);
+
         }
+
 
         if (result < 4){
             cin >> stone_index;
@@ -161,27 +155,26 @@ void Game ::  cpu_turn(){
         }
 
         //If no stone was found take a new on from the deck
-        if (deck_not_empty)
-            take_card();
     }
+    if (deck_not_empty)
+        take_card();
 }
 
 void Game :: stone_handing_out (){
     /*This method will distribute the stones between the two players. */
 
-    int const SIZE = player1->get_START_SIZE();
-    Stone *s_ptr1;
-    Stone *s_ptr2;
+    Stone *s_ptr1 = &deck.stoneAt(0);
+    Stone *s_ptr2 = s_ptr1 + 1;
 
-    for (int i = 0 ; i < SIZE; i++){
+    for (int i = 0 ; i < HAND_SIZE; i++){
 
-        //Take two stones
-        s_ptr1 = first;
-        s_ptr2 = first + 1;
-
-        //Give it to players
+        //Give stones to the players
         player1->add_stone(*s_ptr1);
         player2->add_stone(*s_ptr2);
+
+        //skip the taken stones
+        s_ptr1 += 2;
+        s_ptr2 += 2;
 
 
         //Remove from the original deck
@@ -343,7 +336,7 @@ bool Game :: validate_move(int index, bool mutate, Player& tested) {
         find_current_player().add_stone(deck.stoneAt(position));
         deck.remove_stone(position);
 
-        deck_not_empty = !deck.get_size() == 0;//change if deck is empty
+        deck_not_empty = deck.get_size() != 0;//change if deck is empty
         return true; // Report success
     }
 
@@ -367,7 +360,8 @@ bool Game :: validate_move(int index, bool mutate, Player& tested) {
         if (can_play(current))// As long as the current player can play, the game proceed
             return true;
 
-        //If the current player cannot play, the game is over
+        /*If the current player cannot play, the game is over.
+         * In the rest of the method, the winner will be determined according to the game rules*/
 
         if (can_play(next))//If the second player can still play, then he is the winner
             game_over(next);

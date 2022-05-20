@@ -15,17 +15,18 @@ private:
     int size;
     static const int MAX_VAL  = 6;//A stone's value cannot be greater than 6
     static const int DEF_SIZE = 28;
+
 public:
     //Constructors:
-    Pile (int size);
+     explicit Pile (int size);
     Pile ();
 
 
     //Accessors:
-    Stone&  stoneAt (int index);//Also send a pointer so the adress can be accessed too
+    Stone&  stoneAt (int index);//Also send a pointer so the address can be accessed too
     void print_open();
-    void print_close();//TODO use
-    int get_size();
+    void print_close();
+    int get_size () const;
     int sum();
 
     //Mutators:
@@ -34,11 +35,11 @@ public:
     void add_top (Stone &added_stone);
     void add_bottom (Stone &added_stone);
     void remove_stone (int index);
-    void reboot_size();
+
 
 
         //Assistants:
-    void pilecpy(Stone *dst,Stone *src,int len );
+    static void pilecpy(Stone *dst,Stone *src,int len );
 
     //Destructor:
     ~Pile ();
@@ -47,4 +48,4 @@ public:
 };
 
 
-#endif //ASSIGNMENT_5_PILE_H
+#endif //ASSIGNMENT5_PILE_H

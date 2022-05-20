@@ -12,7 +12,6 @@ Authors: Lior Poterman, ID: 315368035
 class Player {
 private:
     bool is_PC;//This boolean value is vital for the print method
-    static int const START_SIZE = 7;
     char* name = nullptr;
     Pile hand = Pile(0); // cannot postpone initialization to the constructing part
 
@@ -28,7 +27,6 @@ public:
     Pile& get_hand() ;
     void print_hand();
     bool get_is_PC()const;
-    int get_START_SIZE();
 
     //Mutators:
     void add_stone ( Stone &added_stone);

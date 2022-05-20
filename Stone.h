@@ -16,8 +16,6 @@ public:
     //Constructors:
     Stone();
     Stone(int l, int r);
-    Stone(Stone &other);
-
 
     //Accessors:
     int get_l() const;
@@ -25,15 +23,10 @@ public:
     void print_open() const;
     static void print_close();
     bool match (Stone &stated_s, bool left_on_board, bool flip_allowed);
-    bool is_null()const;
-    bool equals (Stone other);
-    int get_points();
+    bool equals (Stone &other) const;
+    int get_points()const;
 
     //Mutators:
     void flip();
-    void set_l(int l);
-    void set_r(int r);
-    void make_null();
-    void transfer_data(Stone &other);
 };
-#endif //ASSIGNMENT_5_STONE_H
+#endif //ASSIGNMENT5_STONE_H
